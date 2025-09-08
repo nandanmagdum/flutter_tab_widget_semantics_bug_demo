@@ -17,12 +17,14 @@ class _MyAppState extends State<MyApp> with TickerProviderStateMixin<MyApp> {
   late TabController _tabController;
   late TabController _tabController2;
   late TabController _tabController3;
+  late TabController _tabController4;
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 4, vsync: this);
     _tabController2 = TabController(length: 2, vsync: this);
     _tabController3 = TabController(length: 4, vsync: this);
+    _tabController4 = TabController(length: 4, vsync: this);
   }
 
   @override
@@ -110,21 +112,29 @@ class _MyAppState extends State<MyApp> with TickerProviderStateMixin<MyApp> {
                 Semantics(
                   role: SemanticsRole.tab,
                   label: 'custom label 1',
+                  excludeSemantics: true,
                   child: Tab(text: 'Tab 6'),
                 ),
                 Semantics(
                   role: SemanticsRole.tabBar,
                   label: 'custom label 2',
+                  excludeSemantics: true,
                   child: Tab(text: 'Tab 7'),
                 ),
                 Semantics(
                   role: SemanticsRole.tabPanel,
                   label: 'custom label 3',
+                  excludeSemantics: true,
                   child: Tab(text: 'Tab 8'),
                 ),
-                ExcludeSemantics(child: Semantics(
-                  label: 'custom label 4',
-                  child: Tab(text: 'Tab 9'))),
+                ExcludeSemantics(
+                  child: Semantics(
+                    label: 'custom label 4',
+                    role: SemanticsRole.spinButton,
+                    excludeSemantics: true,
+                    child: Tab(text: 'Tab 9'),
+                  ),
+                ),
               ],
             ),
             Container(
@@ -136,6 +146,33 @@ class _MyAppState extends State<MyApp> with TickerProviderStateMixin<MyApp> {
                   myBox(text: 'Semantics with rold = tab'),
                   myBox(text: 'Semantics with rold = tabBar'),
                   myBox(text: 'Semantics with rold = tabPanel'),
+                  myBox(text: 'Semantics with rold = tab and excludeSemantics = true'),
+                ],
+              ),
+            ),
+
+            // ✅ 4th tabbar
+            TabBar(
+              controller: _tabController4,
+              tabs: [
+                Semantics(
+                  role: SemanticsRole.none,
+                  child: Tab(text: 'Tab 10')),
+                Tab(text: 'Tab 11'),
+                Tab(text: 'Tab 12'),
+                Tab(text: 'Tab 13'),
+              ],
+            ),
+            Container(
+              height: 100,
+              color: Colors.blueGrey.shade100,
+              child: TabBarView(
+                controller: _tabController4,
+                children: [
+                  myBox(text: 'Tab 10'),
+                  myBox(text: 'Tab 11'),
+                  myBox(text: 'Tab 12'),
+                  myBox(text: 'Tab 13'),
                 ],
               ),
             ),
